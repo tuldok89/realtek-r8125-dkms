@@ -35,7 +35,7 @@ sudo dpkg -i realtek-r8125-dkms*.deb
 > If multiple files selected by the wild card, you should type the specific version of the file.
 >
 > ```bash
-> sudo dpkg -i realtek-r8125-dkms_9.013.02-2_amd64.deb
+> sudo dpkg -i realtek-r8125-dkms_9.015.00-1_amd64.deb
 > ```
 
 If dependency error occurs, try to fix that with `apt` command.
@@ -117,7 +117,7 @@ Finally, reboot to take effect.
 You can build yourself this after installing some dependencies including `dkms`.
 
 ```bash
-sudo apt install devscripts debmake debhelper build-essential dkms
+sudo apt install devscripts debmake debhelper build-essential dkms dh-dkms
 ```
 
 ```bash

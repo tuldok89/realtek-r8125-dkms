@@ -30,7 +30,8 @@
 #  US6,570,884, US6,115,776, and US6,327,625.
 ################################################################################
 
-CONFIG_SOC_LAN = n
+CONFIG_SOC_LAN = y
+ENABLE_FIBER_SUPPORT = y
 ENABLE_REALWOW_SUPPORT = n
 ENABLE_DASH_SUPPORT = n
 ENABLE_DASH_PRINTER_SUPPORT = n
@@ -41,7 +42,7 @@ ENABLE_S5_KEEP_CURR_MAC = n
 ENABLE_EEE = y
 ENABLE_S0_MAGIC_PACKET = n
 ENABLE_TX_NO_CLOSE = y
-ENABLE_MULTIPLE_TX_QUEUE = y
+ENABLE_MULTIPLE_TX_QUEUE = n
 ENABLE_PTP_SUPPORT = y
 ENABLE_PTP_MASTER_MODE = y
 ENABLE_RSS_SUPPORT = n
@@ -52,12 +53,17 @@ DISABLE_MULTI_MSIX_VECTOR = n
 ENABLE_DOUBLE_VLAN = n
 ENABLE_PAGE_REUSE = n
 ENABLE_RX_PACKET_FRAGMENT = n
+ENABLE_GIGA_LITE = y
 
 ifneq ($(KERNELRELEASE),)
 	obj-m := r8125.o
 	r8125-objs := r8125_n.o rtl_eeprom.o rtltool.o
 	ifeq ($(CONFIG_SOC_LAN), y)
 		EXTRA_CFLAGS += -DCONFIG_SOC_LAN
+	endif
+	ifeq ($(ENABLE_FIBER_SUPPORT), y)
+		r8125-objs += r8125_fiber.o
+		EXTRA_CFLAGS += -DENABLE_FIBER_SUPPORT
 	endif
 	ifeq ($(ENABLE_REALWOW_SUPPORT), y)
 		r8125-objs += r8125_realwow.o
@@ -130,6 +136,9 @@ ifneq ($(KERNELRELEASE),)
 	endif
 	ifeq ($(ENABLE_RX_PACKET_FRAGMENT), y)
 		EXTRA_CFLAGS += -DENABLE_RX_PACKET_FRAGMENT
+	endif
+	ifeq ($(ENABLE_GIGA_LITE), y)
+		EXTRA_CFLAGS += -DENABLE_GIGA_LITE
 	endif
 else
 	BASEDIR := /lib/modules/$(shell uname -r)
